@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Phi Kappa Psi at MIT — website
 
-## Getting Started
+The website for the Massachusetts Beta chapter of Phi Kappa Psi at MIT,
+526 Beacon Street, Boston.
 
-First, run the development server:
+Built with Next.js, TypeScript, Tailwind CSS, and shadcn/ui. Hosted on Vercel.
+
+## Running it locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Changing content without touching code
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Most of what you'll want to update lives in `src/data/`:
 
-## Learn More
+- **Rush dates and status** → `src/data/rush.ts`
+- **Officers** → `src/data/chapter.ts`
+- **Brotherhood roster** → `src/data/members.ts`
+- **Majors and employers** → `src/data/careers.ts`
+- **Service partners, sports, traditions** → `src/data/activities.ts`
 
-To learn more about Next.js, take a look at the following resources:
+You can edit these directly on github.com — click the file, click the pencil icon,
+make the change, and commit. Vercel deploys it automatically within a minute or two.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploying
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Push to `main` → deploys to production
+- Push any other branch, or open a pull request → Vercel builds a **preview** at
+  its own URL, so you can check a change on your phone before it goes live
 
-## Deploy on Vercel
+## For whoever maintains this next
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Read [`AGENTS.md`](./AGENTS.md). It documents the architecture constraints, where
+everything lives, and the handful of framework gotchas that will otherwise bite
+you. It's written for an AI coding agent, but it's the fastest orientation for a
+human too.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Before launch
+
+See the "Known TODOs" section of `AGENTS.md` — the officer list, roster,
+photography, and crest are all still placeholders.

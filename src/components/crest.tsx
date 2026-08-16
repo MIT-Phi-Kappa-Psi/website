@@ -1,37 +1,26 @@
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 
 /**
- * Placeholder mark standing in for the Phi Kappa Psi coat of arms.
+ * The Phi Kappa Psi coat of arms — the site's primary mark.
  *
- * TODO: Replace with the real crest. Drop an SVG at `public/crest.svg` and
- * swap this component's body for an <Image> — everything that uses it
- * (header, footer, hero) picks the change up automatically.
+ * Source file is `public/crest.png`, a transparent PNG, so it sits correctly on
+ * both the light header and the dark footer. To replace it, overwrite that file
+ * (keep the transparency and roughly the same 5:6 proportions) — the header and
+ * footer pick the change up automatically.
+ *
+ * Sized by height: callers pass `h-9`, `h-10`, etc. and the width follows.
  */
 export function Crest({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 40 48"
-      aria-hidden="true"
+    <Image
+      src="/crest.png"
+      alt="Phi Kappa Psi coat of arms"
+      width={374}
+      height={447}
       className={cn("h-8 w-auto", className)}
-    >
-      <path
-        d="M2 2h36v26c0 9-8 14-18 18C10 42 2 37 2 28V2Z"
-        className="fill-cardinal"
-      />
-      <path
-        d="M20 2v44c8.5-3.6 18-8.6 18-18V2H20Z"
-        className="fill-hunter-dark"
-      />
-      <text
-        x="20"
-        y="27"
-        textAnchor="middle"
-        className="fill-white font-heading"
-        fontSize="15"
-        letterSpacing="0.5"
-      >
-        ΦΚΨ
-      </text>
-    </svg>
+      loading="eager"
+    />
   );
 }

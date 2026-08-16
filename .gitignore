@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Source photography and documents — originals, not needed to build the site.
+# 171 MB as of Aug 2026. Kept locally; see AGENTS.md.
+/inbox

@@ -13,8 +13,17 @@ const tone = {
 /**
  * Rush status strip. Reads entirely from `src/data/rush.ts` — to change what
  * this says, edit that file, not this component.
+ *
+ * Lives on the Rush page. Pass `showAboutLink={false}` there so the fallback
+ * CTA doesn't link the page to itself; anywhere else, leave it on.
  */
-export function RushBanner({ className }: { className?: string }) {
+export function RushBanner({
+  className,
+  showAboutLink = true,
+}: {
+  className?: string;
+  showAboutLink?: boolean;
+}) {
   const showSignup = rushStatus.state === "open" && rushStatus.signupUrl;
 
   return (
@@ -45,12 +54,14 @@ export function RushBanner({ className }: { className?: string }) {
             Sign up for rush
           </Button>
         ) : (
-          <Link
-            href="/rush"
-            className="w-fit shrink-0 text-sm font-medium underline underline-offset-4"
-          >
-            About rush
-          </Link>
+          showAboutLink && (
+            <Link
+              href="/rush"
+              className="w-fit shrink-0 text-sm font-medium underline underline-offset-4"
+            >
+              About rush
+            </Link>
+          )
         )}
       </div>
     </div>

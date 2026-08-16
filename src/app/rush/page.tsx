@@ -1,17 +1,15 @@
 import type { Metadata } from "next";
+import { Mail, Phone } from "lucide-react";
 
-import { chapter } from "@/data/chapter";
-import { rushPillars, rushStatus } from "@/data/rush";
-import { Button } from "@/components/ui/button";
+import { rushChairs, rushStatus } from "@/data/rush";
 import { PageHero } from "@/components/page-hero";
-import { Placeholder } from "@/components/placeholder";
+import { Photo } from "@/components/photo";
 import { RushBanner } from "@/components/rush-banner";
-import { Section, SectionHeading } from "@/components/section";
+import { Section } from "@/components/section";
 
 export const metadata: Metadata = {
   title: "Rush",
-  description:
-    "Why rush Phi Kappa Psi at MIT — professional development, brotherhood, social events, and living at 526 Beacon Street.",
+  description: `${rushStatus.headline} at Phi Kappa Psi, MIT. Schedule coming soon — reach out to our rush chairs with any questions.`,
 };
 
 export default function RushPage() {
@@ -19,77 +17,55 @@ export default function RushPage() {
     <>
       <PageHero
         eyebrow="Recruitment"
-        title="Why rush Phi Psi?"
-        description="Rush is how you find out whether a house fits. Come to as much or as little as you like — the brothers you meet are the reason to join, not the events."
+        title={rushStatus.headline}
+        description="We're looking forward to meeting you. Reach out to either of our rush chairs with any questions at all."
       />
 
-      <RushBanner />
+      {/* Carries the dates message, so the hero above doesn't repeat it. */}
+      <RushBanner showAboutLink={false} />
 
       <Section>
-        <div className="grid gap-8 md:grid-cols-2">
-          {rushPillars.map((pillar) => (
-            <div
-              key={pillar.title}
-              className="rounded-xl border border-border bg-card p-7"
+        <ul className="grid gap-8 sm:grid-cols-2 md:max-w-3xl">
+          {rushChairs.map((chair) => (
+            <li
+              key={chair.email}
+              className="overflow-hidden rounded-xl border border-border bg-card"
             >
-              <h2 className="text-xl font-semibold">{pillar.title}</h2>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {pillar.body}
-              </p>
-            </div>
+              <Photo
+                src={chair.image}
+                alt={chair.name}
+                ratio="3/4"
+                sizes="(min-width: 640px) 33vw, 100vw"
+                className="rounded-none border-0"
+              />
+              <div className="p-6">
+                <h2 className="font-heading text-xl font-semibold">
+                  {chair.name}
+                </h2>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-cardinal">
+                  Rush Chair
+                </p>
+
+                <div className="mt-5 space-y-3 text-sm">
+                  <a
+                    className="flex items-center gap-2.5 text-muted-foreground transition-colors hover:text-cardinal"
+                    href={`mailto:${chair.email}`}
+                  >
+                    <Mail className="size-4 shrink-0" />
+                    <span className="break-all">{chair.email}</span>
+                  </a>
+                  <a
+                    className="flex items-center gap-2.5 text-muted-foreground transition-colors hover:text-cardinal"
+                    href={`tel:${chair.tel}`}
+                  >
+                    <Phone className="size-4 shrink-0" />
+                    <span>{chair.phone}</span>
+                  </a>
+                </div>
+              </div>
+            </li>
           ))}
-        </div>
-      </Section>
-
-      <Section tone="parchment">
-        <SectionHeading
-          eyebrow="What it looks like"
-          title="A week of rush, roughly"
-          description="Exact events change each semester. TODO: replace this with the real schedule once rush chairs set dates — it lives in src/data/rush.ts."
-        />
-        <div className="mt-12 grid gap-5 sm:grid-cols-2">
-          <Placeholder label="Rush event — dinner at the house" ratio="16/10" />
-          <Placeholder label="Rush event — brothers with rushees" ratio="16/10" />
-        </div>
-      </Section>
-
-      <Section tone="hunter" size="tight">
-        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <div>
-            <h2 className="text-3xl font-semibold">Questions about rush?</h2>
-            <p className="mt-3 max-w-lg text-white/75">
-              Reach out to our rush chairs, or message us on Instagram. We&rsquo;re
-              happy to answer anything before you commit to showing up.
-            </p>
-          </div>
-          <div className="flex shrink-0 flex-wrap gap-3">
-            {rushStatus.state === "open" && rushStatus.signupUrl && (
-              <Button
-                size="lg"
-                variant="secondary"
-                nativeButton={false}
-                render={<a href={rushStatus.signupUrl} />}
-              >
-                Sign up for rush
-              </Button>
-            )}
-            <Button
-              size="lg"
-              variant="outline"
-              nativeButton={false}
-              className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
-              render={
-                <a
-                  href={chapter.social.instagram}
-                  target="_blank"
-                  rel="noreferrer"
-                />
-              }
-            >
-              Message us on Instagram
-            </Button>
-          </div>
-        </div>
+        </ul>
       </Section>
     </>
   );

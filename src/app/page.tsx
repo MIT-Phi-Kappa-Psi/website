@@ -2,10 +2,10 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { chapter } from "@/data/chapter";
+import { exteriorPhoto } from "@/data/house";
 import { Button } from "@/components/ui/button";
-import { Placeholder } from "@/components/placeholder";
-import { RushBanner } from "@/components/rush-banner";
-import { Section, SectionHeading } from "@/components/section";
+import { Photo } from "@/components/photo";
+import { Section } from "@/components/section";
 
 const pillars = [
   {
@@ -47,9 +47,7 @@ export default function HomePage() {
               526 Beacon Street
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80">
-              {chapter.tagline} Scholars, innovators, athletes, startup
-              founders, and philanthropists — living together in a Back Bay
-              brownstone, a bridge away from campus.
+              {chapter.tagline}
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button
@@ -71,24 +69,19 @@ export default function HomePage() {
             </div>
           </div>
 
-          <Placeholder
-            label="Hero shot — the brownstone exterior at golden hour"
+          <Photo
+            src={exteriorPhoto.src}
+            alt={exteriorPhoto.alt}
             ratio="4/5"
-            tone="dark"
+            sizes="(min-width: 768px) 40vw, 100vw"
+            className="border-white/15"
+            eager
           />
         </div>
       </section>
 
-      <RushBanner />
-
       <Section>
-        <SectionHeading
-          eyebrow="Who we are"
-          title="A fraternity that takes all three pillars seriously"
-          description="Phi Kappa Psi at MIT is built on profession, service, and brotherhood. In practice that means alumni who answer your emails, a service calendar that's actually full, and house dinners every weeknight."
-        />
-
-        <div className="mt-12 grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2">
           {pillars.map((pillar) => (
             <Link
               key={pillar.href}
@@ -107,39 +100,11 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section tone="parchment">
-        <SectionHeading
-          eyebrow="The house"
-          title="An oasis in the desert of MIT"
-          description="Fourteen rooms, two common areas, a full kitchen, and a weight room — on the Boston side of the Charles, minutes from Fenway, the Prudential Center, and Boston Common."
-        />
-        <div className="mt-12 grid gap-5 sm:grid-cols-3">
-          <Placeholder label="Common room" ratio="3/4" />
-          <Placeholder label="Dining room, house dinner" ratio="3/4" />
-          <Placeholder label="Front stoop on Beacon Street" ratio="3/4" />
-        </div>
-        <div className="mt-8">
-          <Button
-            variant="outline"
-            nativeButton={false}
-            render={<Link href="/house" />}
-          >
-            Tour the house
-          </Button>
-        </div>
-      </Section>
-
       <Section tone="hunter" size="tight">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <div>
-            <h2 className="text-3xl font-semibold md:text-4xl">
-              Thinking about rushing?
-            </h2>
-            <p className="mt-3 max-w-lg text-white/75">
-              Come by the house, meet a few brothers, and see whether it fits.
-              No commitment, no pressure.
-            </p>
-          </div>
+          <h2 className="text-3xl font-semibold md:text-4xl">
+            Thinking about rushing?
+          </h2>
           <Button
             size="lg"
             variant="secondary"

@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { chapter } from "@/data/chapter";
 import { Crest } from "@/components/crest";
+import { InstagramIcon } from "@/components/icons";
 import { MainNav } from "@/components/main-nav";
 import { MobileNav } from "@/components/mobile-nav";
 
@@ -21,8 +22,18 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <MainNav />
+          <a
+            href={chapter.social.instagram}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Phi Kappa Psi MIT on Instagram"
+            title="Instagram"
+            className="flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-cardinal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cardinal"
+          >
+            <InstagramIcon className="size-5" />
+          </a>
           <MobileNav />
         </div>
       </div>

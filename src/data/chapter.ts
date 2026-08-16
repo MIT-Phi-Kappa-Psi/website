@@ -28,18 +28,21 @@ export const chapter = {
 /**
  * Current exec board.
  *
- * TODO: These carried over from the old Squarespace site and are almost
- * certainly out of date (they date from the 2025 era). Replace with the
- * current board before launch.
+ * To add or remove a position, edit this array — the footer and the Brotherhood
+ * page render whatever is here.
  *
- * To add or remove a position, edit this array — the footer and contact
- * sections render whatever is here.
+ * Rush chairs are listed here deliberately: they are who a prospective member
+ * contacts, so they should never quietly drop off the site.
  */
 export const officers = [
-  { role: "Regent", name: "Jack Debaugh", email: null },
-  { role: "Vice Regent", name: "Kunal Rajadhyax", email: null },
-  { role: "Rush Chairs", name: "Jensen Fiskin, Kunal Rajadhyax", email: null },
-  { role: "Alumni Correspondent", name: "Ben Volokh", email: null },
+  { role: "President", name: "Marc Baker", email: null },
+  { role: "Vice President", name: "Sawyer Quallen", email: null },
+  { role: "Rush Chairs", name: "Victor Perez, Marc Baker", email: null },
+  { role: "Treasurer", name: "Jackson Kay", email: null },
+  { role: "House Manager", name: "Anthony Meng", email: null },
+  { role: "Risk Managers", name: "Ethan Kim, Nate Black", email: null },
+  { role: "Corresponding Secretary", name: "Armaan Gill", email: null },
+  { role: "Scribe", name: "Cole Nguyen", email: null },
 ] as const;
 
 export const addressLine = `${chapter.address.street}, ${chapter.address.city}, ${chapter.address.state} ${chapter.address.zip}`;

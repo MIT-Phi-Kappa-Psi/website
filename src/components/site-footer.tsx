@@ -88,14 +88,19 @@ export function SiteFooter() {
             &copy; {new Date().getFullYear()} {chapter.chapterName} Chapter of{" "}
             {chapter.name} at {chapter.school}.
           </p>
-          <a
-            href={chapter.accessibilityUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="underline underline-offset-4 hover:text-white"
-          >
-            Accessibility
-          </a>
+          {/* MIT's standard institutional footer line. */}
+          <p>
+            Copyright &copy; {new Date().getFullYear()}{" "}
+            Massachusetts Institute of Technology &ndash;{" "}
+            <a
+              href={chapter.accessibilityUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-4 hover:text-white"
+            >
+              Accessibility
+            </a>
+          </p>
         </div>
       </div>
     </footer>

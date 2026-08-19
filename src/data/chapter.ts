@@ -23,6 +23,12 @@ export const chapter = {
     instagram: "https://www.instagram.com/mitphipsi/",
     ifc: "https://ifc.mit.edu/",
   },
+
+  /**
+   * MIT's central accessibility statement. MIT expects sites on its domain to
+   * link to this, so keep it in the footer.
+   */
+  accessibilityUrl: "https://accessibility.mit.edu",
 } as const;
 
 /**

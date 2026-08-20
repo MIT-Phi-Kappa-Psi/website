@@ -83,11 +83,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-5 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            &copy; {new Date().getFullYear()} {chapter.chapterName} Chapter of{" "}
-            {chapter.name} at {chapter.school}.
-          </p>
+        <div className="mx-auto max-w-6xl px-5 py-5 text-xs text-white/55">
           {/* MIT's standard institutional footer line. */}
           <p>
             Copyright &copy; {new Date().getFullYear()}{" "}

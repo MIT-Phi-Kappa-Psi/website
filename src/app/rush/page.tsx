@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
 import { Mail, Phone } from "lucide-react";
 
-import { rushChairs, rushStatus } from "@/data/rush";
+import {
+  rushChairs,
+  rushStatus,
+  rushVideoUrl,
+  schedulePoster,
+} from "@/data/rush";
+import { InstagramEmbed } from "@/components/instagram-embed";
 import { PageHero } from "@/components/page-hero";
 import { Photo } from "@/components/photo";
 import { RushBanner } from "@/components/rush-banner";
-import { Section } from "@/components/section";
+import { Section, SectionHeading } from "@/components/section";
 
 export const metadata: Metadata = {
   title: "Rush",
-  description: `${rushStatus.headline} at Phi Kappa Psi, MIT. Schedule coming soon — reach out to our rush chairs with any questions.`,
+  description: `${rushStatus.headline} at Phi Kappa Psi, MIT. ${rushStatus.detail} Barbecue and house tours, go karting, beach day, and more.`,
 };
 
 export default function RushPage() {
@@ -18,14 +24,55 @@ export default function RushPage() {
       <PageHero
         eyebrow="Recruitment"
         title={rushStatus.headline}
-        description="We're looking forward to meeting you. Reach out to either of our rush chairs with any questions at all."
+        description="We're looking forward to meeting you. Come to whatever you can — everything through Tuesday is open to everyone."
       />
 
-      {/* Carries the dates message, so the hero above doesn't repeat it. */}
+      {/* Carries the dates, so the hero above doesn't repeat them. */}
       <RushBanner showAboutLink={false} />
 
+      <Section tone="parchment">
+        <SectionHeading eyebrow="The week" title="Schedule" />
+
+        {/* Poster and rush video side by side — both are tall portrait
+            formats, so they sit at roughly the same height. */}
+        <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-12">
+          {schedulePoster && (
+            <div className="mx-auto w-full max-w-md lg:mx-0 lg:justify-self-end">
+              {/* Opens the full-size file so it can be pinch-zoomed or saved. */}
+              <a
+                href={schedulePoster.src}
+                target="_blank"
+                rel="noreferrer"
+                className="block transition-opacity hover:opacity-90"
+              >
+                <Photo
+                  src={schedulePoster.src}
+                  alt={schedulePoster.alt}
+                  ratio="784/1360"
+                  sizes="(min-width: 1024px) 40vw, (min-width: 640px) 60vw, 100vw"
+                />
+              </a>
+              <p className="mt-3 text-xs text-muted-foreground">
+                Tap the poster for the full-size version.
+              </p>
+            </div>
+          )}
+
+          {rushVideoUrl && (
+            <div className="mx-auto w-full max-w-md lg:mx-0">
+              <InstagramEmbed url={rushVideoUrl} />
+            </div>
+          )}
+        </div>
+
+      </Section>
+
       <Section>
-        <ul className="grid gap-8 sm:grid-cols-2 md:max-w-3xl">
+        <SectionHeading
+          eyebrow="Questions?"
+          title="Talk to our rush chairs"
+        />
+        <ul className="mt-12 grid gap-8 sm:grid-cols-2 md:max-w-3xl">
           {rushChairs.map((chair) => (
             <li
               key={chair.email}
@@ -39,9 +86,9 @@ export default function RushPage() {
                 className="rounded-none border-0"
               />
               <div className="p-6">
-                <h2 className="font-heading text-xl font-semibold">
+                <h3 className="font-heading text-xl font-semibold">
                   {chair.name}
-                </h2>
+                </h3>
                 <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-cardinal">
                   Rush Chair
                 </p>

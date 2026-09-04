@@ -36,10 +36,11 @@ preferences.
    Pages Router API. Route files are `src/app/<route>/page.tsx`.
 
 2. **Server components by default.** Only add `"use client"` when the component
-   genuinely needs state, effects, or browser events. Right now exactly three
+   genuinely needs state, effects, or browser events. Right now exactly four
    components are client components: `main-nav.tsx` (needs `usePathname`),
-   `mobile-nav.tsx` (needs `useState`), and `photo-carousel.tsx` (needs state
-   and a timer). Every page in this site is statically prerendered — keep it
+   `mobile-nav.tsx` (needs `useState`), `photo-carousel.tsx` (needs state
+   and a timer), and `instagram-embed.tsx` (needs to re-run Instagram's
+   `Embeds.process()` on mount). Every page in this site is statically prerendered — keep it
    that way. A client component does not break that: the carousel's first frame
    is in the prerendered HTML and the rest hydrate in.
 
@@ -68,7 +69,7 @@ markup.** Pages read from these files; nothing is duplicated.
 | File | What's in it |
 |---|---|
 | `src/data/chapter.ts` | Officers, address, social links, tagline |
-| `src/data/rush.ts` | **Rush status banner**, the four "why rush" pillars |
+| `src/data/rush.ts` | **Rush status banner**, rush chairs, the schedule poster, the rush video URL, plus two parked exports |
 | `src/data/members.ts` | Brotherhood roster, grouped by class year |
 | `src/data/careers.ts` | Course numbers, MIT programs, the company wall, alumni connections |
 | `src/data/activities.ts` | House events, philanthropy, varsity/intramural sports |
@@ -87,12 +88,30 @@ Put a Google Form URL in `signupUrl` to turn on the signup CTA. `headline` is
 also the `<h1>` and the meta description on `/rush`, so changing it there updates
 the page title too — there is no second copy to keep in sync.
 
-**The Rush page is deliberately bare.** It is currently just the two rush chairs
-with their phone and email, plus a "schedule coming soon" line. The old
-"Why rush Phi Psi?" pillars are parked in `rushPillars` in `src/data/rush.ts`,
-still exported but rendered nowhere — put them back on the page when the Fall
-2026 schedule is set. `rushChairs` in the same file holds the contact details,
-and reuses the Brotherhood headshots rather than duplicating them.
+**The Rush page carries the schedule.** As of Sep 2026 it is: hero, status
+banner, then the schedule poster and the rush video side by side, then the two
+rush chairs. `rushChairs` holds the contact details and reuses the Brotherhood
+headshots rather than duplicating them.
+
+**The schedule is a JPEG, by chapter preference.** `schedulePoster` in
+`src/data/rush.ts` points at `public/photos/rush/schedule.jpg`. To change the
+schedule, export a new poster and overwrite that file — there is no text copy
+on the page to keep in sync.
+
+Be aware of what that costs: a screen reader gets nothing from the poster
+beyond its `alt`, the times can't be searched or copied, and it doesn't reflow
+on a phone (it's a tall image you pinch-zoom). Given the MIT accessibility link
+in the footer, offer the text version again next time the schedule changes. A
+full transcription is parked in `rushSchedule` in `src/data/rush.ts` and the
+markup that rendered it is in git history — restoring it is a small job. This
+was raised and the chapter chose the graphic alone; don't silently re-add it.
+
+Two exports in `src/data/rush.ts` are deliberately rendered nowhere:
+`rushSchedule` (above) and `rushPillars`, the old "Why rush Phi Psi?" copy.
+Note that `rushPillars` still names Morgan Stanley, Apple, Google, SpaceX,
+Tesla, NASA, and McKinsey — the same unsubstantiated employer claims that were
+deliberately cut from the Careers page. **Do not restore that text as-is**;
+rewrite it against the company wall in `src/data/careers.ts` first.
 
 **New exec board:** edit the `officers` array in `src/data/chapter.ts`. The footer
 and the Brotherhood page both read from it.
@@ -136,6 +155,7 @@ placeholders. Sources are kept in `inbox/`:
 | Activities | 33, in `public/photos/{activities,service,sports}/` | `inbox/Activities`, `inbox/Sports`, `inbox/Community Service` (Aug 2026) | `src/data/activities.ts` |
 | Careers | 3, in `public/photos/alumni/` | `inbox/Alumni  Connections` (Aug 2026) | `src/data/careers.ts` |
 | Brotherhood | 30 headshots, in `public/photos/members/<year>/` | `inbox/Class of <year>/` (Aug 2026) | `src/data/members.ts` |
+| Rush | 1 schedule poster, in `public/photos/rush/` | supplied by the rush chairs (Sep 2026) | `src/data/rush.ts` |
 
 These are honest phone shots and screenshots, not the professional shoot — when
 better frames arrive, overwrite the files at the same paths and nothing else
@@ -179,6 +199,31 @@ Logo files go in `public/logos/companies/`. Prefer a wordmark (name as text)
 over a bare icon, and SVG over PNG. The grid uses a plain `<img>`, not
 `next/image`: SVG through `next/image` would require `dangerouslyAllowSVG`,
 whereas an SVG loaded via `<img>` is script-disabled by the browser.
+
+**The rush video is an Instagram embed, and it does not play in place.**
+`rushVideoUrl` in `src/data/rush.ts` points at a chapter Instagram post, rendered
+by `src/components/instagram-embed.tsx`.
+
+This is the **only third-party script on the site**. It loads Instagram's
+`embed.js`, which sets cookies for everyone who opens `/rush`. It was accepted
+because the chapter had the rush video on Instagram and not as a file.
+
+Known behaviour, so nobody re-debugs it:
+- **Instagram serves Reels as a cover frame with a "Watch on Instagram"
+  click-through.** The play button does not start playback on our page — that
+  is Instagram's embed endpoint, inside a cross-origin iframe, and no change on
+  our side alters it.
+- It renders as a dead link if the post is deleted or archived, or if
+  `@mitphipsi` goes private.
+- Instagram controls the styling — its own chrome, like counts, and comment box
+  sit inside our layout, and it ignores the site's theme.
+
+**The fix is a self-hosted video**, and it is worth chasing: put the `.mp4` in
+`public/video/`, swap the embed for a native `<video controls playsInline>`
+with a poster frame, and delete `instagram-embed.tsx`. That plays inline, drops
+the third-party script, matches the site, and can't rot. Get the original export
+from whoever edited the video — the Instagram copy is re-compressed. Set
+`rushVideoUrl` to `null` to drop the video section entirely.
 
 ## Copy: the site is deliberately sparse
 
@@ -233,6 +278,12 @@ rush chairs can review it on a real URL before it goes live.
   Theta Tau house next door** (their crest is in the fanlight); it was not used.
   Check the door before wiring in a new exterior.
 - `programs` in `careers.ts` (UROP, MISTI, Global Teaching Labs) is still unverified old-site content
-- Rush page is a holding page — restore `rushPillars` and add the schedule once Fall 2026 dates are set
+- **Flip `rushStatus` to `"closed"` after Fall Rush ends Sep 10, 2026** — it is
+  currently `"open"`. This is the thing the old site got wrong for a year
+- Replace the Instagram rush-video embed with a self-hosted `.mp4` — the embed
+  doesn't play inline and loads the site's only third-party script (see above)
+- `rushPillars` still cites unverifiable employers; rewrite before restoring it
+- The rush schedule is a JPEG with no text equivalent — offer the accessible
+  version again next time the schedule changes (`rushSchedule` is parked ready)
 - `metadataBase` in `src/app/layout.tsx` points at the old production URL; confirm once DNS is settled
 - No rush signup form yet — plan is a Google Form linked from `rushStatus.signupUrl`

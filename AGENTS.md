@@ -71,7 +71,7 @@ markup.** Pages read from these files; nothing is duplicated.
 | `src/data/chapter.ts` | Officers, address, social links, tagline |
 | `src/data/rush.ts` | **Rush status banner**, rush chairs, the schedule poster, the rush video URL, plus two parked exports |
 | `src/data/members.ts` | Brotherhood roster, grouped by class year |
-| `src/data/careers.ts` | Course numbers, MIT programs, the company wall, alumni connections |
+| `src/data/careers.ts` | Course numbers, MIT programs, the company wall, extracurriculars, alumni connections |
 | `src/data/activities.ts` | House events, philanthropy, varsity/intramural sports |
 | `src/data/house.ts` | House stats, shared spaces, and the floor-by-floor room tour |
 
@@ -200,6 +200,30 @@ over a bare icon, and SVG over PNG. The grid uses a plain `<img>`, not
 `next/image`: SVG through `next/image` would require `dangerouslyAllowSVG`,
 whereas an SVG loaded via `<img>` is script-disabled by the browser.
 
+A trap worth knowing, because it has now been hit repeatedly: when `logo` is
+set the grid shows **only** the image — the name drops to `alt`/`title`. So a
+bare abstract icon with no lettering makes a tile nobody can identify. Möbius
+Industries and the Improbable AI Lab both have marks and are both deliberately
+`logo: null` for exactly this reason. **A text tile beats an unlabelled icon.**
+
+**Extracurriculars** (`extracurriculars` in the same file) is a second wall
+below the company one: MIT clubs and activities, rendered through the same
+`<CompanyGrid>` and reusing the `Company` type. Its logos live separately in
+`public/logos/extracurriculars/`. **Sports are deliberately excluded** — varsity
+teams and intramural leagues belong to `varsitySports`/`intramuralSports` in
+`src/data/activities.ts`, where they get photos on the Activities page. Putting
+a team in both places double-counts it.
+
+**How both lists were built, for whoever extends them:** the chapter supplies
+raw names from a survey, and one subagent per small batch resolves each name to
+a current homepage and a logo file, reporting back the `{ name, homepage, logo,
+dark }` line plus anything surprising. That is where the footnotes in the data
+file come from — Ansys redirecting to Synopsys, Brushett's `.org` being a dead
+Wix site, `upcyclex.com` being a different company from `upcyclex.tech`. Names
+the agents could not pin down were **left off rather than guessed at**; see the
+TODOs. Budget for that: roughly a third of a raw survey list needs a human to
+disambiguate it.
+
 **The rush video is an Instagram embed, and it does not play in place.**
 `rushVideoUrl` in `src/data/rush.ts` points at a chapter Instagram post, rendered
 by `src/components/instagram-embed.tsx`.
@@ -278,6 +302,36 @@ rush chairs can review it on a real URL before it goes live.
   Theta Tau house next door** (their crest is in the fanlight); it was not used.
   Check the door before wiring in a new exterior.
 - `programs` in `careers.ts` (UROP, MISTI, Global Teaching Labs) is still unverified old-site content
+- **Six career/extracurricular entries are parked pending a word from the brother
+  who listed them** (Sep 2026 survey). None are in the data file; all need one
+  text message to resolve:
+  - *"LEAP group"* — no LEAP exists in MIT CEE. Best candidate is the
+    [MIT LEAP Group](https://leapgroup.mit.edu/) (Learning Engineering and
+    Practice, John Liu, MechE), which fits the same brother's lean-manufacturing
+    internship — but it is the wrong department and none of its 16 public UROPs
+    matches the roster. Logo, if confirmed:
+    `https://leapgroup.mit.edu/files/2025/12/MIT_LEAP_Logo_Black.png`
+  - *"CEE lab"* — names no lab. CEE is Course 1 itself; its labs are Parsons and
+    Pierce. Ask which lab and which PI, or leave it off.
+  - *"San Diego Flora"* — no plausible match exists. Likely a garbled entry.
+  - *"Mahta"* — only real match is a Brazilian foodtech (mahta.bio); weak fit
+    unless it was a MISTI Brazil placement.
+  - *Citadel* — currently linked to Citadel LLC, the hedge fund. If he meant
+    **Citadel Securities** (a separate firm) swap the homepage, name, and logo.
+  - *"MIT Entrepreneurship Club"* — matched to MEC, but both its domains are
+    dead so the tile links its student-directory page. MIT also has StartLabs
+    and the older E-Club; confirm which one.
+- **MISTI Peru was deliberately left off the company wall.** MISTI is an MIT
+  program that places students at a host organisation — nobody works *at* MISTI,
+  and it is already listed in `programs`. If that placement is worth showing,
+  ask which Peruvian organisation hosted him and add that instead.
+- **MIT Club Golf appears nowhere on the site.** It is a club sport, so it is not
+  in `varsitySports`, not in `intramuralSports`, and excluded from
+  `extracurriculars` along with the other sports. Add it to `intramuralSports` in
+  `activities.ts` if the chapter wants it shown.
+- `varcov.png` on the company wall was cropped out of a hero JPEG — VarCov's
+  two-page site publishes no vector or transparent asset. It is the lowest
+  fidelity tile on the wall; replace it if a real logo ever turns up.
 - **Flip `rushStatus` to `"closed"` after Fall Rush ends Sep 10, 2026** — it is
   currently `"open"`. This is the thing the old site got wrong for a year
 - Replace the Instagram rush-video embed with a self-hosted `.mp4` — the embed

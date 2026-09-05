@@ -4,6 +4,7 @@ import {
   alumniConnections,
   companies,
   courses,
+  extracurriculars,
   programs,
 } from "@/data/careers";
 import { Badge } from "@/components/ui/badge";
@@ -53,6 +54,11 @@ export default function CareersPage() {
       </Section>
 
       <Section>
+        <SectionHeading eyebrow="Outside class" title="Extracurriculars" />
+        <CompanyGrid companies={extracurriculars} />
+      </Section>
+
+      <Section tone="parchment">
         <SectionHeading
           eyebrow="Beyond the classroom"
           title="Programs brothers take part in"
@@ -74,7 +80,7 @@ export default function CareersPage() {
         </dl>
       </Section>
 
-      <Section tone="parchment">
+      <Section>
         <SectionHeading eyebrow="Alumni" title="The network stays close" />
         <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {alumniConnections.map((item) => (

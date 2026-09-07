@@ -47,7 +47,7 @@ export default function CareersPage() {
       <Section tone="parchment">
         <SectionHeading
           eyebrow="The network"
-          title="Where brothers have worked"
+          title="Where current brothers have worked"
           description="Through our alumni network we have a connection to virtually any company you might want to work at. These are the places current brothers have actually worked and researched."
         />
         <CompanyGrid companies={companies} />
